@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
-import posts from '../modules/posts';
-import comments from '../modules/comments';
+import usersSlice from '../modules/usersSlice';
+import postsSlice from '../modules/postsSlice';
+import commentsSlice from '../modules/commentsSlice';
 
 const store = configureStore({
   reducer: {
-    posts,
-    comments
+    usersSlice,
+    postsSlice,
+    commentsSlice
   }
 });
 

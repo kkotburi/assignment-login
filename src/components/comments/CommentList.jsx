@@ -1,10 +1,16 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { deleteComment, getComments } from '../../api/comments';
+import { useMutation, useQueryClient } from 'react-query';
+import { deleteComment } from '../../api/comments';
+import { rDeleteComment } from '../../redux/modules/commentsSlice';
 
 const CommentList = () => {
   const { id } = useParams();
+  const dispatch = useDispatch();
+
+  const comments = useSelector((state) => state.commentsSlice);
+  const filterdComments = comments.filter((comment) => comment.postId === id);
 
   const queryClient = useQueryClient();
   const mutation = useMutation(deleteComment, {
@@ -13,27 +19,29 @@ const CommentList = () => {
     }
   });
 
-  const { isLoading, isError, data } = useQuery('comments', getComments);
-
-  if (isLoading) {
-    return <div>Loading…</div>;
-  }
-
-  if (isError) {
-    return <div>Error</div>;
-  }
-
-  const comments = data.filter((comment) => `${comment.postId}` === id);
+  const users = useSelector((state) => {
+    return state.usersSlice;
+  });
+  const signInUser = users.find((user) => user.isSignIn);
 
   return (
     <div>
       CommentList
-      {comments.map((comment) => {
+      {filterdComments.map((comment) => {
         return (
           <div key={comment.id}>
             <div>{comment.id}</div>
             <div>{comment.text}</div>
-            <button onClick={() => mutation.mutate(comment.id)}>delete</button>
+            {comment.userId === signInUser.id && (
+              <button
+                onClick={() => {
+                  mutation.mutate(comment.id);
+                  dispatch(rDeleteComment(comment.id));
+                }}
+              >
+                delete
+              </button>
+            )}
           </div>
         );
       })}
