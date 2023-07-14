@@ -1,4 +1,18 @@
 {
+  "users": [
+    {
+      "id": 1,
+      "email": "123@123.com",
+      "password": "123123",
+      "isSignIn": true
+    },
+    {
+      "id": 2,
+      "email": "234@234.com",
+      "password": "234234",
+      "isSignIn": false
+    }
+  ],
   "posts": [
     {
       "id": 1,
@@ -9,5 +23,12 @@
       "text": "for detail page test &>>"
     }
   ],
-  "comments": []
+  "comments": [
+    {
+      "id": "",
+      "userId": "",
+      "postId": "",
+      "text": ""
+    }
+  ]
 }

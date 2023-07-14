@@ -1,13 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = [{ id: '', userId: '', postId: '', text: '' }];
+const initialState = [];
 
 const commenstSlice = createSlice({
   name: 'comments',
   initialState,
   reducers: {
     rGetComments: (state, action) => {
-      return [...action.payload];
+      return action.payload;
     },
     rAddComment: (state, action) => {
       return [...state, action.payload];
