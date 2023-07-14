@@ -1,39 +1,45 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useMutation, useQueryClient } from 'react-query';
 import { signIn } from '../../redux/modules/usersSlice';
+import { updateUser } from '../../api/users';
 
 const SignInForm = () => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
-  // const users = useSelector((state) => {
-  //   return state.usersSlice;
-  // });
-  // const signInUser = users.find((user) => user.isSignIn);
-  // console.log(signInUser);
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const queryClient = useQueryClient();
+  const mutation = useMutation(updateUser, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('users');
+    }
+  });
+
+  const users = useSelector((state) => {
+    return state.usersSlice;
+  });
+  const currnetUser = users.find((user) => user.email === email && user.password === password);
+  console.log('sign', currnetUser);
 
   const onSubmitSignIn = (e) => {
     e.preventDefault();
 
-    dispatch(
-      signIn({
-        email,
-        password
-      })
-    );
+    if (
+      currnetUser
+      // && !currnetUser.isSignIn
+    ) {
+      mutation.mutate(currnetUser);
+      dispatch(signIn(currnetUser));
 
-    navigate('/');
-
-    // if (signInUser) {
-    //   navigate('/');
-    // } else {
-    //   alert('Please sign in.');
-    //   return false;
-    // }
+      navigate('/');
+    } else {
+      alert('Please confirm your email and password.');
+      return false;
+    }
   };
 
   const onChangeEmail = (e) => {

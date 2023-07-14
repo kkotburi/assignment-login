@@ -1,27 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = [
-  {
-    id: 1,
-    email: '123@123.com',
-    password: '123123',
-    isSignIn: false
-  },
-  {
-    id: 2,
-    email: '234@234.com',
-    password: '234234',
-    isSignIn: false
-  }
-];
+const initialState = [];
 
 const usersSlice = createSlice({
   name: 'users',
   initialState,
   reducers: {
+    rGetUsers: (state, action) => {
+      return action.payload;
+    },
     signIn: (state, action) => {
       return state.map((user) => {
-        if (user.email === action.payload.email && user.password === action.payload.password && !user.isSignIn) {
+        if (user.id === action.payload.id) {
           return { ...user, isSignIn: true };
         } else {
           return user;
@@ -43,5 +33,5 @@ const usersSlice = createSlice({
   }
 });
 
-export const { signIn, signUp, signOut } = usersSlice.actions;
+export const { rGetUsers, signIn, signUp, signOut } = usersSlice.actions;
 export default usersSlice.reducer;
