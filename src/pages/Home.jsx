@@ -17,10 +17,10 @@ const Home = () => {
 
   const { isLoading, isError, data } = useQuery('posts', getPosts);
 
-  if (!currnetUser) {
-    alert('Please sign in.');
-    navigate('/signin');
-  }
+  // if (!currnetUser) {
+  //   alert('Please sign in.');
+  //   navigate('/signin');
+  // }
 
   if (isLoading) {
     return <div>Loading…</div>;
